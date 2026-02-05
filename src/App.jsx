@@ -1,5 +1,5 @@
 import Header from './shared/components/Header'
-
+import Footer from './shared/components/Footer'
 function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100">
@@ -9,6 +9,7 @@ function App() {
           Contenido principal aquí 🎭
         </p>
       </main>
+      <Footer />
     </div>
   )
 }
