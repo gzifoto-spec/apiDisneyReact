@@ -1,8 +1,13 @@
+import { useState } from 'react'
 import Header from './shared/components/Header'
 import Footer from './shared/components/Footer'
 import CharacterGrid from './features/characters/CharacterGrid'
+import Pagination from './features/navigation/Pagination'
 
 function App() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = 10
+
   const mockCharacters = [
     {
       name: "Mickey Mouse",
@@ -50,11 +55,26 @@ function App() {
     }
   ]
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex flex-col">
       <Header />
       <main className="container mx-auto px-4 py-8 flex-grow">
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
         <CharacterGrid characters={mockCharacters} />
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </main>
       <Footer />
     </div>
