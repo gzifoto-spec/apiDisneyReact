@@ -1,4 +1,30 @@
+import { useState, useEffect } from 'react'
+
 function CharacterCard({ character }) {
+    const [isPlaceholder, setIsPlaceholder] = useState(false)
+    const [imageSrc, setImageSrc] = useState(character.imageUrl)
+
+    useEffect(() => {
+        setImageSrc(character.imageUrl)
+        setIsPlaceholder(false)
+    }, [character.imageUrl])
+
+    const handleImageError = () => {
+        if (!isPlaceholder) {
+            setImageSrc('/assets/images/castle.png')
+            setIsPlaceholder(true)
+        }
+    }
+
+    const handleImageLoad = (e) => {
+        if (e.target.naturalWidth === 200 && e.target.naturalHeight === 114) {
+            if (!isPlaceholder) {
+                setImageSrc('/assets/images/castle.png')
+                setIsPlaceholder(true)
+            }
+        }
+    }
+
     const renderSection = (title, items) => {
         if (!items || items.length === 0) {
             return (
@@ -28,13 +54,19 @@ function CharacterCard({ character }) {
         <article className="bg-gradient-to-br from-purple-100 to-pink-50 rounded-2xl border-4 border-yellow-400 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden">
             <div className="relative h-64 bg-gradient-to-br from-blue-200 to-purple-200">
                 <img
-                    src={character.imageUrl}
+                    src={imageSrc}
                     alt={character.name}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/300x400/667ca1/ffffff?text=Disney'
-                    }}
+                    className={`w-full h-full ${isPlaceholder ? 'object-contain' : 'object-cover'}`}
+                    onLoad={handleImageLoad}
+                    onError={handleImageError}
                 />
+
+                {isPlaceholder && (
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-transparent text-white px-4 py-2 rounded-lg font-bold text-sm shadow-2xl border-4 border-white backdrop-blur-sm">
+                        Imagen no encontrada
+                    </div>
+                )}
+
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                     <h3 className="text-2xl font-bold text-white drop-shadow-lg">
                         {character.name}

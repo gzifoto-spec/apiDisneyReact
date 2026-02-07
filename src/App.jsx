@@ -1,33 +1,47 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Header from './shared/components/Header'
 import Footer from './shared/components/Footer'
 import CharacterGrid from './features/characters/CharacterGrid'
 import Pagination from './features/navigation/Pagination'
 import { fetchCharacters } from './services/disneyApi'
 import { useResponsive } from './shared/hooks/useResponsive'
+import { useTransitionEffect } from './shared/hooks/useTransitionEffect'
 
 function App() {
   const [characters, setCharacters] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(() => {
+    return Math.floor(Math.random() * 410) + 1
+  })
   const [totalPages, setTotalPages] = useState(1)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [fadeOut, setFadeOut] = useState(false)
+  const [playSound, setPlaySound] = useState(false)
   
+  const mainRef = useRef(null)
   const pageSize = useResponsive()
+  const { currentEffect, playRandomEffect } = useTransitionEffect()
 
   useEffect(() => {
     const loadCharacters = async () => {
       setLoading(true)
+      setFadeOut(false)
       setError(null)
       
       try {
         const data = await fetchCharacters(currentPage, pageSize)
         setCharacters(data.characters)
         setTotalPages(data.totalPages)
+        
+        setTimeout(() => {
+          setFadeOut(true)
+          setTimeout(() => {
+            setLoading(false)
+          }, 400)
+        }, 300)
       } catch (err) {
         setError('Error al cargar los personajes. Por favor, intenta de nuevo.')
         console.error(err)
-      } finally {
         setLoading(false)
       }
     }
@@ -36,15 +50,39 @@ function App() {
   }, [currentPage, pageSize])
 
   const handlePageChange = (newPage) => {
+    if (mainRef.current) {
+      const headerHeight = 80
+      const elementPosition = mainRef.current.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+    
     setCurrentPage(newPage)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setPlaySound(true)
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex flex-col">
-        <Header />
-        <main className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center">
+  const handleAnimationStart = () => {
+    if (playSound) {
+      playRandomEffect()
+      setPlaySound(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex flex-col">
+      <Header />
+      
+      {loading ? (
+        <main 
+          ref={mainRef}
+          className={`container mx-auto px-4 py-8 flex-grow flex items-center justify-center transition-opacity duration-400 ${
+            fadeOut ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
           <div className="text-center">
             <div className="text-6xl mb-4 animate-bounce">🏰</div>
             <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
@@ -52,16 +90,11 @@ function App() {
             </p>
           </div>
         </main>
-        <Footer />
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex flex-col">
-        <Header />
-        <main className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center">
+      ) : error ? (
+        <main 
+          ref={mainRef}
+          className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center"
+        >
           <div className="text-center bg-white p-8 rounded-2xl border-4 border-red-400 shadow-2xl max-w-md">
             <div className="text-6xl mb-4">😢</div>
             <p className="text-2xl font-bold text-red-600 mb-4">
@@ -76,27 +109,26 @@ function App() {
             </button>
           </div>
         </main>
-        <Footer />
-      </div>
-    )
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex flex-col">
-      <Header />
-      <main className="container mx-auto px-4 py-8 flex-grow">
-        <Pagination 
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-        <CharacterGrid characters={characters} />
-        <Pagination 
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </main>
+      ) : (
+        <main 
+          ref={mainRef}
+          className={`container mx-auto px-4 py-8 flex-grow ${currentEffect}`}
+          onAnimationStart={handleAnimationStart}
+        >
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+          <CharacterGrid characters={characters} />
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </main>
+      )}
+      
       <Footer />
     </div>
   )

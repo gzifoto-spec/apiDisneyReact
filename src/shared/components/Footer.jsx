@@ -3,7 +3,11 @@ function Footer() {
         <footer className="bg-gradient-to-r from-blue-900 via-purple-800 to-blue-900 border-t-4 border-yellow-400 shadow-2xl mt-auto">
             <div className="container mx-auto px-4 py-8">
                 <div className="flex flex-col items-center gap-4 text-center">
-                    <span className="text-5xl">🏰</span>
+                    <img
+                        src="/assets/images/datalandWhite.png"
+                        alt="Dataland Logo"
+                        className="h-20 w-auto"
+                    />
 
                     <div className="text-yellow-200">
                         <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-300 mb-2">
