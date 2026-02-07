@@ -6,10 +6,7 @@ export const useTransitionEffect = () => {
     const effects = [
         'animate-slideInRight',
         'animate-slideInLeft',
-        'animate-zoomIn',
-        'animate-rotateIn',
-        'animate-curtainOpen',
-        'animate-sparkleIn'
+        'animate-curtainOpen'
     ]
 
     const sounds = [

@@ -52,17 +52,6 @@ function App() {
   }, [currentPage, pageSize])
 
   const handlePageChange = (newPage) => {
-    if (mainRef.current) {
-      const headerHeight = 80
-      const elementPosition = mainRef.current.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - headerHeight
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    }
-
     setCurrentPage(newPage)
     setPlaySound(true)
   }
@@ -84,6 +73,19 @@ function App() {
       playRandomEffect()
       setPlaySound(false)
     }
+
+    if (!selectedCharacter && mainRef.current) {
+      setTimeout(() => {
+        const headerHeight = 80
+        const elementPosition = mainRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }, 50)
+    }
   }
 
   return (
@@ -91,6 +93,38 @@ function App() {
       <Header />
 
       {loading ? (
+        <main
+          ref={mainRef}
+          className={`container mx-auto px-4 py-8 flex-grow flex items-center justify-center transition-opacity duration-400 ${fadeOut ? 'opacity-0' : 'opacity-100'
+            }`}
+        >
+          <div className="text-center">
+            <div className="text-6xl mb-4 animate-bounce">🏰</div>
+            <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+              Cargando magia de Disney...
+            </p>
+          </div>
+        </main>
+      ) : error ? (
+        <main
+          ref={mainRef}
+          className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center"
+        >
+          <div className="text-center bg-white p-8 rounded-2xl border-4 border-red-400 shadow-2xl max-w-md">
+            <div className="text-6xl mb-4">😢</div>
+            <p className="text-2xl font-bold text-red-600 mb-4">
+              ¡Ups! Algo salió mal
+            </p>
+            <p className="text-gray-700 mb-6">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform"
+            >
+              Reintentar
+            </button>
+          </div>
+        </main>
+      ) : (
         <main
           ref={mainRef}
           className={`container mx-auto px-4 py-8 flex-grow ${currentEffect}`}
@@ -119,43 +153,6 @@ function App() {
               />
             </>
           )}
-        </main>
-      ) : error ? (
-        <main
-          ref={mainRef}
-          className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center"
-        >
-          <div className="text-center bg-white p-8 rounded-2xl border-4 border-red-400 shadow-2xl max-w-md">
-            <div className="text-6xl mb-4">😢</div>
-            <p className="text-2xl font-bold text-red-600 mb-4">
-              ¡Ups! Algo salió mal
-            </p>
-            <p className="text-gray-700 mb-6">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform"
-            >
-              Reintentar
-            </button>
-          </div>
-        </main>
-      ) : (
-        <main
-          ref={mainRef}
-          className={`container mx-auto px-4 py-8 flex-grow ${currentEffect}`}
-          onAnimationStart={handleAnimationStart}
-        >
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-          <CharacterGrid characters={characters} />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
         </main>
       )}
 
