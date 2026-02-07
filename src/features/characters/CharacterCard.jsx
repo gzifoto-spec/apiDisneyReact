@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function CharacterCard({ character }) {
+function CharacterCard({ character, onClick }) {
     const [isPlaceholder, setIsPlaceholder] = useState(false)
     const [imageSrc, setImageSrc] = useState(character.imageUrl)
 
@@ -51,8 +51,10 @@ function CharacterCard({ character }) {
     }
 
     return (
-        <article className="bg-gradient-to-br from-purple-100 to-pink-50 rounded-2xl border-4 border-yellow-400 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden">
-            <div className="relative h-64 bg-gradient-to-br from-blue-200 to-purple-200">
+        <article
+            onClick={onClick}
+            className="bg-gradient-to-br from-purple-100 to-pink-50 rounded-2xl border-4 border-yellow-400 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden cursor-pointer"
+        >            <div className="relative h-64 bg-gradient-to-br from-blue-200 to-purple-200">
                 <img
                     src={imageSrc}
                     alt={character.name}

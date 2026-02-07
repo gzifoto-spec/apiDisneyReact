@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Header from './shared/components/Header'
 import Footer from './shared/components/Footer'
 import CharacterGrid from './features/characters/CharacterGrid'
+import CharacterDetail from './features/characters/CharacterDetail'
 import Pagination from './features/navigation/Pagination'
 import { fetchCharacters } from './services/disneyApi'
 import { useResponsive } from './shared/hooks/useResponsive'
@@ -17,7 +18,8 @@ function App() {
   const [error, setError] = useState(null)
   const [fadeOut, setFadeOut] = useState(false)
   const [playSound, setPlaySound] = useState(false)
-  
+  const [selectedCharacter, setSelectedCharacter] = useState(null)
+
   const mainRef = useRef(null)
   const pageSize = useResponsive()
   const { currentEffect, playRandomEffect } = useTransitionEffect()
@@ -27,12 +29,12 @@ function App() {
       setLoading(true)
       setFadeOut(false)
       setError(null)
-      
+
       try {
         const data = await fetchCharacters(currentPage, pageSize)
         setCharacters(data.characters)
         setTotalPages(data.totalPages)
-        
+
         setTimeout(() => {
           setFadeOut(true)
           setTimeout(() => {
@@ -60,9 +62,21 @@ function App() {
         behavior: 'smooth'
       })
     }
-    
+
     setCurrentPage(newPage)
     setPlaySound(true)
+  }
+
+  const handleCharacterClick = (character) => {
+    setSelectedCharacter(character)
+    setPlaySound(true)
+    playRandomEffect()
+  }
+
+  const handleBackToList = () => {
+    setSelectedCharacter(null)
+    setPlaySound(true)
+    playRandomEffect()
   }
 
   const handleAnimationStart = () => {
@@ -75,23 +89,39 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 flex flex-col">
       <Header />
-      
+
       {loading ? (
-        <main 
+        <main
           ref={mainRef}
-          className={`container mx-auto px-4 py-8 flex-grow flex items-center justify-center transition-opacity duration-400 ${
-            fadeOut ? 'opacity-0' : 'opacity-100'
-          }`}
+          className={`container mx-auto px-4 py-8 flex-grow ${currentEffect}`}
+          onAnimationStart={handleAnimationStart}
         >
-          <div className="text-center">
-            <div className="text-6xl mb-4 animate-bounce">🏰</div>
-            <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-              Cargando magia de Disney...
-            </p>
-          </div>
+          {selectedCharacter ? (
+            <CharacterDetail
+              character={selectedCharacter}
+              onBack={handleBackToList}
+            />
+          ) : (
+            <>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+              <CharacterGrid
+                characters={characters}
+                onCharacterClick={handleCharacterClick}
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
+          )}
         </main>
       ) : error ? (
-        <main 
+        <main
           ref={mainRef}
           className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center"
         >
@@ -110,25 +140,25 @@ function App() {
           </div>
         </main>
       ) : (
-        <main 
+        <main
           ref={mainRef}
           className={`container mx-auto px-4 py-8 flex-grow ${currentEffect}`}
           onAnimationStart={handleAnimationStart}
         >
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
           <CharacterGrid characters={characters} />
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
         </main>
       )}
-      
+
       <Footer />
     </div>
   )
