@@ -4,6 +4,34 @@ An educational web application built with React and Tailwind CSS that showcases 
 
 ![Dataland Preview](https://img.shields.io/badge/React-18.3-blue) ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8) ![Vite](https://img.shields.io/badge/Vite-6.0-646cff)
 
+## 📸 Gallery
+
+<div align="center">
+  <img src="public/screenshots/desktop.png" alt="Desktop View - Character Grid" width="80%">
+  <p><em>Desktop View - Interactive character grid with navigation</em></p>
+</div>
+
+<div align="center">
+  <img src="public/screenshots/mobile.png" alt="Mobile View" width="35%">
+  <img src="public/screenshots/footer.png" alt="Footer with Links" width="60%">
+</div>
+<div align="center">
+  <p><em>Mobile responsive design & Footer with GitHub links</em></p>
+</div>
+
+## 📋 TODO - Future Improvements
+
+- [ ] **Mobile Navigation Enhancement** - Improve Previous/Next button sizing and positioning for mobile devices
+- [ ] **Search Functionality** - Add character search by name
+- [ ] **Filters** - Filter by films, TV shows, or character type
+- [ ] **Favorites System** - Allow users to save favorite characters
+- [ ] **Dark Mode** - Toggle between light and dark themes
+- [ ] **Animations Library** - Add more transition effects
+- [ ] **Performance** - Implement lazy loading for images
+- [ ] **PWA Support** - Make the app installable
+- [ ] **Unit Tests** - Add Jest/Vitest test coverage
+- [ ] **Accessibility** - Improve ARIA labels and keyboard navigation
+
 ## ✨ Features
 
 - 🎭 **Interactive Character Cards** - Browse through 410+ Disney characters
