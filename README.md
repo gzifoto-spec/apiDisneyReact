@@ -2,22 +2,18 @@
 
 An educational web application built with React and Tailwind CSS that showcases Disney characters through an interactive, magical user experience. Features dynamic transitions, sound effects, and comprehensive character information from the Disney API.
 
-![Dataland Preview](https://img.shields.io/badge/React-18.3-blue) ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8) ![Vite](https://img.shields.io/badge/Vite-6.0-646cff)
+![React](https://img.shields.io/badge/React-18.3-blue) ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8) ![Vite](https://img.shields.io/badge/Vite-6.0-646cff) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 📸 Gallery
 
-<div align="center">
-  <img src="public/screenshots/desktop.png" alt="Desktop View - Character Grid" width="80%">
-  <p><em>Desktop View - Interactive character grid with navigation</em></p>
-</div>
+| Desktop View | Mobile Design | Footer & Links |
+| :---: | :---: | :---: |
+| [![Desktop](public/screenshots/desktop.png)](public/screenshots/desktop.png) | [![Mobile](public/screenshots/mobile.png)](public/screenshots/mobile.png) | [![Footer](public/screenshots/footer.png)](public/screenshots/footer.png) |
+| <img src="https://img.shields.io/badge/Layout-Desktop-red?style=flat-square" alt="Desktop"> | <img src="https://img.shields.io/badge/Layout-Mobile-orange?style=flat-square" alt="Mobile"> | <img src="https://img.shields.io/badge/Layout-Footer-grey?style=flat-square" alt="Footer"> |
 
-<div align="center">
-  <img src="public/screenshots/mobile.png" alt="Mobile View" width="35%">
-  <img src="public/screenshots/footer.png" alt="Footer with Links" width="60%">
-</div>
-<div align="center">
-  <p><em>Mobile responsive design & Footer with GitHub links</em></p>
-</div>
+<p align="center">
+  <em>🔍 Haz clic en las miniaturas para ampliar las capturas de pantalla.</em>
+</p>
 
 ## 📋 TODO - Future Improvements
 
