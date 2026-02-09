@@ -12,7 +12,7 @@ An educational web application built with React and Tailwind CSS that showcases 
 | <img src="https://img.shields.io/badge/Layout-Desktop-red?style=flat-square" alt="Desktop"> | <img src="https://img.shields.io/badge/Layout-Mobile-orange?style=flat-square" alt="Mobile"> | <img src="https://img.shields.io/badge/Layout-Footer-grey?style=flat-square" alt="Footer"> |
 
 <p align="center">
-  <em>🔍 Haz clic en las miniaturas para ampliar las capturas de pantalla.</em>
+  <em>🔍 click on thumbnails to blow the screenshots up.</em>
 </p>
 
 ## 📋 TODO - Future Improvements
